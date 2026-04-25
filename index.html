@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undangan Tian & Penny</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins';
+background:linear-gradient(to bottom,#fffaf5,#f3e7d3);
+text-align:center;
+}
+
+/* COVER */
+.cover{
+position:fixed;
+width:100%;
+height:100vh;
+background:linear-gradient(135deg,#f8e8c8,#e8d5b7);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:999;
+transition:1s;
+}
+.cover.hide{opacity:0;pointer-events:none}
+
+.btn{
+padding:12px 30px;
+border:none;
+border-radius:40px;
+background:linear-gradient(45deg,#d4a574,#b88a5a);
+color:white;
+cursor:pointer;
+}
+
+/* HERO */
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+background:url('bg.jpeg') center/cover;
+position:relative;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.25));
+top:0;left:0;
+}
+
+.hero *{position:relative}
+
+/* FOTO */
+.frame{
+width:210px;
+height:210px;
+border-radius:50%;
+overflow:hidden;
+border:5px solid #fff;
+box-shadow:0 0 0 8px rgba(212,165,116,0.7),0 0 30px rgba(212,165,116,0.6),0 20px 50px rgba(0,0,0,0.7);
+margin-bottom:20px;
+}
+.frame img{width:100%;height:100%;object-fit:cover}
+
+/* TEXT BOX */
+.hero-text{
+background:rgba(0,0,0,0.25);
+padding:15px 25px;
+border-radius:20px;
+backdrop-filter:blur(5px);
+}
+
+/* NAMA */
+.hero h1{
+font-family:'Playfair Display';
+font-size:56px;
+margin:10px 0;
+color:#fff;
+text-shadow:0 3px 15px rgba(0,0,0,0.8),0 0 25px rgba(0,0,0,0.6);
+letter-spacing:2px;
+}
+
+.hero p{
+color:#fff;
+text-shadow:0 2px 10px rgba(0,0,0,0.7);
+}
+
+/* SECTION */
+.section{
+padding:70px 20px;
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+.section.show{opacity:1;transform:translateY(0)}
+
+.title{
+font-family:'Playfair Display';
+color:#b88a5a;
+font-size:34px;
+}
+
+/* CARD */
+.card{
+background:rgba(255,255,255,0.9);
+border-radius:20px;
+padding:25px;
+margin:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* AYAT */
+.verse{
+font-family:'Playfair Display';
+font-size:18px;
+line-height:1.8;
+color:#6b4f3b;
+font-style:italic;
+}
+
+/* ORTU */
+.ortu-name{
+font-family:'Playfair Display';
+font-size:22px;
+color:#b88a5a;
+}
+.ortu-text{
+font-size:14px;
+color:#555;
+}
+
+/* COUNTDOWN */
+.countdown{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+.box{
+background:white;
+padding:20px;
+border-radius:15px;
+width:90px;
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+.number{font-size:28px;color:#d4a574;font-weight:bold}
+
+/* SLIDER */
+.slider{
+position:relative;
+max-width:800px;
+margin:auto;
+overflow:hidden;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+.slides{
+display:flex;
+transition:transform 0.6s ease-in-out;
+width:100%;
+}
+
+.slides img{
+width:100%;
+flex:0 0 100%;
+height:400px;
+object-fit:cover;
+animation:zoomEffect 8s ease-in-out forwards;
+}
+
+/* ZOOM CINEMATIC */
+@keyframes zoomEffect{
+0%{transform:scale(1);}
+100%{transform:scale(1.15);}
+}
+
+.prev,.next{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,0.5);
+color:white;
+border:none;
+font-size:25px;
+padding:10px;
+cursor:pointer;
+border-radius:50%;
+}
+.prev{left:10px}
+.next{right:10px}
+
+.dots{text-align:center;margin-top:10px}
+.dot{
+height:10px;
+width:10px;
+margin:5px;
+background:#ccc;
+display:inline-block;
+border-radius:50%;
+}
+.dot.active{background:#d4a574}
+
+/* MUSIC */
+.music{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:white;
+padding:10px 20px;
+border-radius:30px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- COVER -->
+<div class="cover" id="cover">
+<h2>Kepada Yth.</h2>
+<p id="guest">Bapak/Ibu/Saudara/i</p>
+<button class="btn" id="open">Buka Undangan</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+<div class="frame">
+<img src="foto.jpeg">
+</div>
+
+<div class="hero-text">
+<h1>Tian & Penny</h1>
+<p>2 Mei 2026 • 08:00 WIB</p>
+</div>
+</div>
+
+<!-- AYAT -->
+<div class="section">
+<div class="title">Firman Tuhan</div>
+<div class="card">
+<p class="verse">
+“Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.”
+<br><br><b>— Matius 19:6</b>
+</p>
+</div>
+</div>
+
+<!-- GALERI -->
+<div class="section">
+<div class="title">Galeri</div>
+<div class="slider">
+<div class="slides">
+<img src="foto1.jpeg">
+<img src="foto2.jpeg">
+<img src="foto3.jpeg">
+</div>
+<button class="prev">&#10094;</button>
+<button class="next">&#10095;</button>
+<div class="dots"></div>
+</div>
+</div>
+
+<!-- ORTU -->
+<div class="section">
+<div class="title">Keluarga Pengantin</div>
+<div class="card">
+<div class="ortu-name">Septian Tri Wiyanto</div>
+<div class="ortu-text">Putra dari</div>
+<div class="ortu-text"><b>Bapak Daryono</b> & <b>Ibu Waginem</b></div><br>
+<div class="ortu-name">Bernike Penny</div>
+<div class="ortu-text">Putri dari</div>
+<div class="ortu-text"><b>Bapak Mukijo (Alm)</b> & <b>Ibu Mukiyem (Alm)</b></div>
+</div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="section">
+<div class="title">Menuju Hari Bahagia</div>
+<div class="countdown">
+<div class="box"><div id="d" class="number">0</div><div>Hari</div></div>
+<div class="box"><div id="h" class="number">0</div><div>Jam</div></div>
+<div class="box"><div id="m" class="number">0</div><div>Menit</div></div>
+<div class="box"><div id="s" class="number">0</div><div>Detik</div></div>
+</div>
+</div>
+
+<!-- DETAIL -->
+<div class="section">
+<div class="title">Detail Acara</div>
+<div class="card">
+<p>📅 2 Mei 2026</p>
+<p>⏰ 08.00 WIB</p>
+<p>📍 LAWANG DJOENDJING CAFE</p>
+</div>
+</div>
+
+<!-- MAP -->
+<div class="section">
+<div class="title">Lokasi</div>
+<div class="card">
+<img id="qr" width="150"><br><br>
+<a id="map"><button class="btn">Lihat Maps</button></a>
+</div>
+</div>
+
+<!-- UCAPAN -->
+<div class="section">
+<div class="card">
+<p>
+Kami mohon doa restu atas pernikahan kami 💍<br><br>
+Merupakan suatu kehormatan bagi kami apabila Anda berkenan hadir
+</p>
+</div>
+</div>
+
+<!-- MUSIC -->
+<div class="music">
+<button id="musicBtn">Pause</button>
+</div>
+
+<audio id="audio" loop>
+<source src="lagu.mp3">
+</audio>
+
+<script>
+// OPEN
+document.getElementById("open").onclick=()=>{
+document.getElementById("cover").classList.add("hide");
+document.getElementById("audio").play();
+}
+
+// MUSIC
+let play=true;
+const musicBtn=document.getElementById("musicBtn");
+musicBtn.onclick=()=>{
+const a=document.getElementById("audio");
+if(play){a.pause();musicBtn.innerText="Play";}
+else{a.play();musicBtn.innerText="Pause";}
+play=!play;
+}
+
+// SCROLL
+const sections=document.querySelectorAll(".section");
+window.addEventListener("scroll",()=>{
+sections.forEach(sec=>{
+if(sec.getBoundingClientRect().top<window.innerHeight-100){
+sec.classList.add("show");
+}
+});
+});
+
+// NAMA TAMU
+const nama=new URLSearchParams(location.search).get("to");
+if(nama){
+document.getElementById("guest").innerText="Bapak/Ibu/Saudara/i "+nama;
+}
+
+// MAP
+const link="https://maps.google.com/?q=Lawang+Djoendjing";
+document.getElementById("qr").src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+encodeURIComponent(link);
+document.getElementById("map").href=link;
+
+// COUNTDOWN
+const target=new Date(2026,4,2,8,0).getTime();
+setInterval(()=>{
+let now=new Date().getTime();
+let diff=target-now;
+
+document.getElementById("d").innerText=Math.floor(diff/(1000*60*60*24));
+document.getElementById("h").innerText=Math.floor((diff/(1000*60*60))%24);
+document.getElementById("m").innerText=Math.floor((diff/(1000*60))%60);
+document.getElementById("s").innerText=Math.floor((diff/1000)%60);
+
+if(diff<0){
+document.querySelector(".countdown").innerHTML="<h2>Hari Bahagia 🎉</h2>";
+}
+},1000);
+
+// SLIDER CINEMATIC
+let index=0;
+const slides=document.querySelector(".slides");
+const images=document.querySelectorAll(".slides img");
+const total=images.length;
+const dotsContainer=document.querySelector(".dots");
+
+// dots
+images.forEach((_, i)=>{
+let dot=document.createElement("span");
+dot.classList.add("dot");
+if(i===0) dot.classList.add("active");
+dot.onclick=()=>showSlide(i);
+dotsContainer.appendChild(dot);
+});
+
+const dots=document.querySelectorAll(".dot");
+
+function showSlide(i){
+index=i;
+
+if(index>=total) index=0;
+if(index<0) index=total-1;
+
+slides.style.transform=`translateX(-${index*100}%)`;
+
+// reset zoom
+images.forEach(img=>{
+img.style.animation="none";
+img.offsetHeight;
+img.style.animation="zoomEffect 8s ease-in-out forwards";
+});
+
+dots.forEach(d=>d.classList.remove("active"));
+dots[index].classList.add("active");
+}
+
+document.querySelector(".next").onclick=()=>showSlide(index+1);
+document.querySelector(".prev").onclick=()=>showSlide(index-1);
+
+setInterval(()=>showSlide(index+1),4000);
+</script>
+
+</body>
+</html>
+```
